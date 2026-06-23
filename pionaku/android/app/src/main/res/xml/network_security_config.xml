@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Release: cleartext off. Debug builds: debug-overrides allow HTTP (LAN). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <debug-overrides>
+        <base-config cleartextTrafficPermitted="true" />
+    </debug-overrides>
+</network-security-config>

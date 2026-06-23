@@ -1,0 +1,33 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Mulai]) --> B
+    B["Buka Menu Manual Entry"] --> C
+    C["Input Data Penumpang Manual"] --> D
+    D["Isi Form:\nNama · PNR · Flight · Origin\nDestination · Seat · Tipe · Kategori"] --> E
+
+    E{Semua Field\nTerisi?}
+    E -- ❌ Tidak --> F
+    F["Tampil Validasi Error\nper Field yang Kosong"] --> D
+
+    E -- ✅ Ya --> G
+    G["Upload Foto Boarding Pass\n(Kamera atau Galeri)"] --> H
+
+    H{Foto Berhasil\nDiproses?}
+    H -- ❌ Tidak --> I
+    I["Tampil Error Upload\n'Gagal memproses foto'"] --> G
+
+    H -- ✅ Ya --> J
+    J{Gunakan\nAI Generate?}
+
+    J -- Ya --> K
+    K["AI Ekstrak Data\nfrom Foto Boarding Pass"] --> L
+    L["Isi Otomatis Field\nyang Relevan ke Form"]  --> M
+    M["Petugas Verifikasi\n& Koreksi Data"]
+
+    J -- Tidak --> M
+
+    M --> N
+    N["Submit Data"] --> O
+    O["Simpan ke Tabel passengers\n& photo_uploads"] --> P
+    P["Data Muncul di\nDaftar Penumpang"] --> Q
+    Q([🔴 Selesai])

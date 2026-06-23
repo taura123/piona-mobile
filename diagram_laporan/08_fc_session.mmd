@@ -1,0 +1,25 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Request ke Backend]) --> B
+
+    B{Ada JWT\nToken?}
+    B -- ❌ Tidak --> C
+    C["Return 401 Unauthorized"] --> D
+    D["Redirect ke Halaman Login"]
+
+    B -- ✅ Ya --> E
+    E{Token\nExpired?}
+    E -- ✅ Ya --> F
+    F["Return 401 Token Expired"] --> D
+
+    E -- Tidak --> G
+    G["Verifikasi Role User\n(Admin · Scan · View · IT)"] --> H
+
+    H{Aksi\nDiizinkan?}
+    H -- ❌ Tidak --> I
+    I["Return 403 Forbidden\n'Akses Ditolak'"]
+
+    H -- ✅ Ya --> J
+    J["Proses Request\n& Eksekusi Logika Bisnis"] --> K
+    K["Return Response 200 OK\n+ Data Hasil"] --> L
+    L([🔴 Selesai])

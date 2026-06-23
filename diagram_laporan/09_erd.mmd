@@ -1,0 +1,92 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px", "attributeBackgroundColorOdd": "#EFF6FF", "attributeBackgroundColorEven": "#ffffff"}}}%%
+erDiagram
+    users {
+        int id PK "Primary Key"
+        varchar username UK "Unique"
+        varchar password "Hashed bcrypt"
+        enum role "Admin, Scan, View, IT"
+        enum status "Active, Inactive"
+        timestamptz created_at
+    }
+
+    scan_points {
+        int id PK "Primary Key"
+        varchar name UK "Nama Gate/Terminal"
+        enum status "Active, Inactive"
+        timestamptz created_at
+    }
+
+    passengers {
+        int id PK "Primary Key"
+        varchar pnr "Passenger Name Record"
+        varchar name "Nama Penumpang"
+        varchar flight_number "Nomor Penerbangan"
+        varchar origin "Bandara Asal"
+        varchar destination "Bandara Tujuan"
+        varchar seat_number "Nomor Kursi"
+        varchar sequence_number "Nomor Urut"
+        date flight_date "Tanggal Penerbangan"
+        enum type "Adult, Child, Infant"
+        enum category "Normal, Transit"
+        timestamp scanned_at "Waktu Scan"
+        varchar scan_point FK "Referensi scan_points"
+        varchar sent "Status Pengiriman"
+        timestamp send_date
+        timestamp deleted_at "Soft Delete"
+    }
+
+    bcbp_parser {
+        int id PK "Primary Key"
+        varchar raw_barcode "String Barcode Asli"
+        jsonb parsed_data "Hasil Parse JSON"
+        enum parsing_status "success, failed, partial"
+        varchar error_message "Pesan Error (jika gagal)"
+        timestamp scan_timestamp "Waktu Scan"
+        varchar scan_point FK "Referensi scan_points"
+        int scanner_user_id FK "Referensi users"
+        int passenger_id FK "Referensi passengers"
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    photo_uploads {
+        int id PK "Primary Key"
+        int passenger_id FK "Referensi passengers"
+        varchar filename "Nama File Foto"
+        int file_size "Ukuran File (bytes)"
+        timestamp upload_timestamp "Waktu Upload"
+        jsonb session_data "Data Sesi Saat Upload"
+        enum source_type "scan-transit, data-entry"
+        boolean manual_entry_saved
+        boolean ai_generated "Diproses AI?"
+        jsonb ai_generated_data "Data Ekstraksi AI"
+        timestamp deleted_at "Soft Delete"
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    log_login {
+        int id PK "Primary Key"
+        int user_id FK "Referensi users"
+        timestamp login_timestamp "Waktu Login"
+        timestamp logout_timestamp "Waktu Logout"
+        int session_duration_seconds "Durasi Sesi"
+        enum login_status "success, failed, timeout, forced_logout"
+        varchar ip_address "Alamat IP"
+        varchar user_agent "Browser/App Info"
+        enum login_method "password, session, token, sso"
+        varchar failure_reason "Alasan Gagal (jika ada)"
+        varchar scan_point FK "Referensi scan_points"
+        varchar airport_branch "Kode Bandara"
+        jsonb device_info "Info Perangkat"
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    users ||--o{ bcbp_parser : "scanner_user_id"
+    users ||--o{ log_login : "mencatat"
+    scan_points ||--o{ passengers : "lokasi scan"
+    scan_points ||--o{ bcbp_parser : "lokasi scan"
+    scan_points ||--o{ log_login : "lokasi login"
+    passengers ||--o{ bcbp_parser : "hasil parsing"
+    passengers ||--o{ photo_uploads : "foto boarding pass"

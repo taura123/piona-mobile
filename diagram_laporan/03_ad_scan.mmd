@@ -1,0 +1,38 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Mulai]) --> B
+    B["Buka Menu Scan Normal / Scan Transit"] --> C
+    C["Aktifkan Kamera Perangkat"] --> D
+    D["Arahkan Kamera ke Barcode Boarding Pass"] --> E
+
+    E{Barcode\nTerdeteksi?}
+    E -- Tidak --> D
+
+    E -- Ya --> F
+    F["Parse Data BCBP\n(Standar IATA)"] --> G
+
+    G{Parsing\nBerhasil?}
+    G -- ❌ Gagal --> H
+    H["Tampil Modal: ❌ Invalid Barcode"] --> I
+    I["Simpan ke DB sebagai status = failed"] --> S
+    S["Tampil Notifikasi Gagal"] --> C
+
+    G -- ✅ Berhasil --> J
+    J{Data\nLengkap?}
+    J -- ⚠️ Tidak Lengkap --> K
+    J -- ✅ Lengkap --> L
+    K["Tampil Modal: ⚠️ Partial Data"]
+    L["Tampil Modal: ✅ Valid"]
+
+    K & L --> M
+    M["Simpan ke Tabel passengers\n& bcbp_parser"] --> N
+
+    N{Upload\nFoto?}
+    N -- Ya --> O
+    O["Ambil Foto via Kamera"] --> P
+    P["Simpan ke Tabel photo_uploads"]
+    N -- Tidak --> Q
+
+    P --> Q
+    Q["Data Muncul di Dashboard\n& Daftar Penumpang"] --> R
+    R([🔴 Selesai])

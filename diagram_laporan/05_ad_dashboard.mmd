@@ -1,0 +1,20 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Mulai]) --> B
+    B["Buka Halaman Home / Dashboard"] --> C
+    C["Request Data KPI ke Backend"] --> D
+
+    D{Backend\nMerespons?}
+    D -- ❌ Tidak --> E
+    E["Tampil Data Cache Terakhir\n'Memuat ulang...'"] --> Z
+
+    D -- ✅ Ya --> F
+    F["Terima Data KPI dari API"] --> G
+    G["Tampilkan: Total Scan Hari Ini\n(Adult · Child · Infant)"] --> H
+    H["Tampilkan: Jumlah Penerbangan\n& Scan Point Aktif"] --> I
+    I["Tampilkan Grafik Bar\nScan per Jam"] --> J
+    J["Tampilkan Top 5\nPenerbangan Tersibuk"] --> K
+    K["Tampilkan Top 5\nRute Terpopuler"] --> L
+    L["Auto Refresh Timer\n(setiap 5 detik)"] --> C
+
+    Z([🔴 Selesai / Menunggu Koneksi])

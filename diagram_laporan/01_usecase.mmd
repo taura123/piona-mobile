@@ -1,0 +1,41 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart LR
+    Admin(["👤 Admin / IT"])
+    Scan(["👤 Petugas Scan"])
+    Viewer(["👤 Viewer"])
+    Sistem(["⚙️ Sistem"])
+
+    subgraph SYS["  Sistem PIONA — Boarding Management System  "]
+        direction TB
+        subgraph AUTH["🔐 Autentikasi"]
+            UC01(["UC-01\nLogin"])
+            UC02(["UC-02\nLogout"])
+        end
+        subgraph SCAN_GRP["📷 Pencatatan Penumpang"]
+            UC03(["UC-03\nScan Normal"])
+            UC04(["UC-04\nScan Transit"])
+            UC05(["UC-05\nManual Entry"])
+            UC09(["UC-09\nUpload Foto"])
+        end
+        subgraph MONITOR["📊 Monitoring & Laporan"]
+            UC06(["UC-06\nDashboard KPI"])
+            UC07(["UC-07\nDaftar Penumpang"])
+            UC08(["UC-08\nFilter & Cari"])
+            UC12(["UC-12\nLaporan Rekap"])
+            UC13(["UC-13\nAuto Refresh"])
+        end
+        subgraph MGMT["⚙️ Manajemen Sistem"]
+            UC10(["UC-10\nKelola User"])
+            UC11(["UC-11\nKelola Scan Point"])
+        end
+    end
+
+    Admin --> UC01 & UC02 & UC06 & UC07 & UC08 & UC10 & UC11 & UC12
+    Scan --> UC01 & UC02 & UC03 & UC04 & UC05 & UC06 & UC07 & UC08 & UC09
+    Viewer --> UC01 & UC02 & UC06 & UC07 & UC08 & UC12
+    Sistem --> UC13
+
+    UC07 -.->|"«include»"| UC08
+    UC03 -.->|"«include»"| UC09
+    UC04 -.->|"«include»"| UC09
+    UC05 -.->|"«include»"| UC09

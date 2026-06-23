@@ -1,0 +1,32 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Dapat Raw Barcode String]) --> B
+
+    B{Format BCBP Valid?}
+    B -- Tidak --> C
+    B -- Ya --> E
+
+    C["Set status = ❌ failed"] --> D
+    D["Simpan error_message\nke tabel bcbp_parser"] --> Z
+
+    E["Ekstrak Field BCBP:\nPNR · Nama · Flight · Seat\nOrigin · Destination · Tanggal"] --> F
+
+    F{Semua Field\nDitemukan?}
+    F -- Sebagian --> G
+    F -- Semua --> H
+
+    G["Set status = ⚠️ partial"]
+    H["Set status = ✅ success"]
+
+    G & H --> I
+    I["Cek Unique Constraint\n(barcode + scan point + tanggal)"] --> J
+
+    J{Sudah Ada\ndi Database?}
+    J -- Ya / Duplikat --> K
+    J -- Tidak / Baru --> L
+
+    K["Skip — Tampilkan:\n'Penumpang Sudah Pernah Di-scan'"] --> Z
+    L["INSERT ke tabel passengers"] --> M
+    M["INSERT ke tabel bcbp_parser"] --> Z
+
+    Z([🔴 Selesai])

@@ -1,0 +1,33 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Mulai — Petugas Datang]) --> B
+
+    B["Login ke Aplikasi PIONA\n(Username · Password · Scan Point · Bandara)"]
+    B --> C
+
+    C{Mode Operasional?}
+    C -- Scan Barcode --> D
+    C -- Input Manual --> K
+
+    D["Ambil Boarding Pass Penumpang"] --> E
+    E["Scan Barcode BCBP via Kamera"] --> F
+    F{Scan Berhasil?}
+    F -- Tidak --> K
+    F -- Ya --> G
+
+    G{Data Lengkap?}
+    G -- Tidak Lengkap --> H
+    G -- Lengkap --> J
+
+    H["Tambah Data yang Kurang\nSecara Manual"] --> J
+    K["Input Data Manual\n+ Upload Foto Boarding Pass"] --> J
+
+    J["✅ Data Tersimpan ke Database"] --> L
+    L["Data Tampil di Dashboard Real-time"] --> M
+
+    M{Penumpang Berikutnya?}
+    M -- Ya --> C
+    M -- Tidak --> N
+
+    N["End of Shift / Logout"] --> O
+    O([🔴 Selesai])

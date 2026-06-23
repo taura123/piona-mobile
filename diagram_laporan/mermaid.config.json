@@ -1,0 +1,42 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "primaryColor": "#EFF6FF",
+    "primaryTextColor": "#1e3a8a",
+    "primaryBorderColor": "#1e40af",
+    "lineColor": "#374151",
+    "secondaryColor": "#DBEAFE",
+    "tertiaryColor": "#F0F9FF",
+    "background": "#ffffff",
+    "mainBkg": "#EFF6FF",
+    "nodeBorder": "#1e40af",
+    "clusterBkg": "#EFF6FF",
+    "clusterBorder": "#93C5FD",
+    "titleColor": "#1e3a8a",
+    "edgeLabelBackground": "#F8FAFC",
+    "fontFamily": "Segoe UI, Arial, sans-serif",
+    "fontSize": "15px",
+    "labelBackground": "#F8FAFC",
+    "nodeTextColor": "#1e293b",
+    "activeTaskBorderColor": "#1e40af",
+    "activeTaskBkgColor": "#DBEAFE",
+    "attributeBackgroundColorOdd": "#F0F9FF",
+    "attributeBackgroundColorEven": "#ffffff"
+  },
+  "flowchart": {
+    "curve": "basis",
+    "padding": 24,
+    "nodeSpacing": 55,
+    "rankSpacing": 65,
+    "diagramPadding": 30,
+    "htmlLabels": true
+  },
+  "er": {
+    "diagramPadding": 40,
+    "layoutDirection": "TB",
+    "minEntityWidth": 120,
+    "minEntityHeight": 80,
+    "entityPadding": 18,
+    "fontSize": 13
+  }
+}

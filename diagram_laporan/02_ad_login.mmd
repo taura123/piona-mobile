@@ -1,0 +1,23 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#EFF6FF", "primaryTextColor": "#1e3a8a", "primaryBorderColor": "#1e40af", "lineColor": "#374151", "secondaryColor": "#DBEAFE", "tertiaryColor": "#F0F9FF", "background": "#ffffff", "mainBkg": "#EFF6FF", "nodeBorder": "#1e40af", "clusterBkg": "#EFF6FF", "clusterBorder": "#93C5FD", "titleColor": "#1e3a8a", "edgeLabelBackground": "#F8FAFC", "fontFamily": "Segoe UI, Arial, sans-serif", "fontSize": "14px"}}}%%
+flowchart TD
+    A([🟢 Mulai]) --> B
+    B["Buka Aplikasi PIONA"] --> C
+    C["Input Username & Password"] --> D
+    D["Pilih Scan Point & Bandara"] --> E
+    E["Kirim Request Login ke Backend"] --> F
+
+    F{Validasi\nKredensial}
+    F -- ❌ Invalid --> G
+    G["Tampilkan Pesan Error\n'Username/Password salah'"] --> C
+
+    F -- ✅ Valid --> H
+    H{Cek Status\nAkun}
+    H -- Nonaktif --> I
+    I["Tampilkan Notifikasi\n'Akun Dinonaktifkan'"] --> C
+
+    H -- Aktif --> J
+    J["Generate JWT Token"] --> K
+    K["Simpan Session & Context\n(Secure Storage)"] --> L
+    L["Catat Log Login ke Database"] --> M
+    M["Redirect ke Dashboard Utama"] --> N
+    N([🔴 Selesai])

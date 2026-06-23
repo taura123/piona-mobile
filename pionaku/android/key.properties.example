@@ -1,0 +1,12 @@
+# Copy to key.properties (same folder) and fill in. key.properties is gitignored.
+# Release builds use this keystore when key.properties exists; otherwise debug
+# signing is used (local builds only — not for Play Store).
+#
+# Generate a keystore:
+#   keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA \
+#     -keysize 2048 -validity 10000 -alias upload
+#
+storePassword=your-store-password
+keyPassword=your-key-password
+keyAlias=upload
+storeFile=../upload-keystore.jks
